@@ -7,15 +7,17 @@ router.post('/test', verifyToken, (req, res) => {
     const clients = req.app.get('clients');
     const { user_id, channel, data } = req.body;
 
-    const client = clients.find((client) => client.user_id == user_id)
-    if(client == undefined) return res.json({ message: 'User disconnected.' })
+    const clientsFilter = clients.filter((client) => client.user_id == user_id)
+    if(clientsFilter == undefined) return res.json({ message: 'Users undefined.' })
+    if(clientsFilter.length == 0) return res.json({ message: 'Users list empty.' })
 
     if (!data) {
         return res.status(400).json({ error: 'Message is required' });
     }
 
-    console.log("Send to ", `${channel}_${user_id}`)
-    io.to(`${channel}_${client.socket_id}`).emit('notification', { channel: channel, data: data });
+    clientsFilter.forEach((client) => {
+        io.to(`${channel}_${client.socket_id}`).emit('notification', { channel: channel, data: data });
+    })
     res.json({ channel: channel, message: 'Message sent' });
 });
 
