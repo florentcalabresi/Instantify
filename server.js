@@ -29,7 +29,7 @@ io.use((socket, next) => {
                 return next(new Error('Authentication error'));
             }
             
-            if(clients.find((client) => client.user_id == user_id)) return next(new Error('Authentication error'));
+            if(clients.find((client) => client.user_id == user_id)) return next(new Error('User already exists in client list'));
 
             clients.push(new Client(socket.id, user_id));
             //Update list
