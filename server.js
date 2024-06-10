@@ -38,7 +38,7 @@ io.use((socket, next) => {
             next();
         });
     } else {
-        next(new Error('Authentication error'));
+        next(new Error('Token or User_ID is not valid.'));
     }
 });
 
