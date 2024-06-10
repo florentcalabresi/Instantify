@@ -41,6 +41,9 @@ io.use((socket, next) => {
 });
 
 io.on('connection', (socket) => {
+    socket.on('subscribe_channel_public', (channel) => {
+        socket.join(`${channel}`);
+    })
     socket.on('subscribe_channel', (channel) => {
         socket.join(`${channel}_${socket.id}`);
     })
